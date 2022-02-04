@@ -5,38 +5,20 @@
 {% block content %}
     <h3>Store</h3>
     <div class="row">
+        {% if products %}
+            {% for product in products %}
         <div class="col-lg-4">
-            <img class="thumbnail" src="{% static 'images/640x360.png' %}" alt="">
+            <img class="thumbnail" src="{{ product.imageUrl }}" alt="">
             <div class="box-element product">
-                <h6> <strong> product</strong></h6>
+                <h6> <strong>{{ product.name }}</strong></h6>
                 <hr>
-                <button class="btn btn-outline-secondary add-btn">add to cart</button>
+                <button data-product="{{ product.id }}" data-actions="add" class="btn btn-outline-secondary add-btn upadate_cart">add to cart</button>
                 <a class="btn btn-outline-success" href="">views</a>
-                <h4 style="display:inline-block; float: right">$20</h4>
+                <h4 style="display:inline-block; float: right">{{ product.price|floatformat:2 }}</h4>
             </div>
         </div>
-
-        <div class="col-lg-4">
-            <img class="thumbnail" src="{% static 'images/640x360.png' %}" alt="">
-            <div class="box-element product">
-                <h6> <strong> product</strong></h6>
-                <hr>
-                <button class="btn btn-outline-secondary add-btn">add to cart</button>
-                <a class="btn btn-outline-success" href="">views</a>
-                <h4 style="display:inline-block; float: right">$20</h4>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <img class="thumbnail" src="{% static 'images/640x360.png' %}" alt="">
-            <div class="box-element product">
-                <h6> <strong> product</strong></h6>
-                <hr>
-                <button class="btn btn-outline-secondary add-btn">add to cart</button>
-                <a class="btn btn-outline-success" href="">views</a>
-                <h4 style="display:inline-block; float: right">$20</h4>
-            </div>
-        </div>
+            {% endfor %}
+        {% endif %}
 
     </div>
 

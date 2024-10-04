@@ -130,7 +130,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'manitriniaina2002@gmail.com'
-EMAIL_HOST_PASSWORD = 'manitra1946'  # ou le mot de passe d'application si nécessaire
+EMAIL_HOST_PASSWORD = 'mwgt ppof djuq gnbn'  # le mot de passe d'application
 EMAIL_USE_LOCALTIME = True
 
 

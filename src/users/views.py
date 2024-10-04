@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -75,18 +76,21 @@ def custom_password_reset_request(request):
                         [user.email],
                         fail_silently=False,
                     )
+                    # Ajoutez un message de confirmation
+                    messages.success(request, "Veuillez consulter votre adresse e-mail pour réinitialiser votre mot de passe.")
+                    return redirect('password_reset_done')  # Rediriger vers une page de confirmation
                 except Exception as e:
                     form.add_error(None, "Une erreur s'est produite lors de l'envoi de l'e-mail. Veuillez réessayer.")
                     logging.error(f"Erreur d'envoi d'email: {e}")
-
-                # Rediriger vers l'URL de confirmation avec uidb64 et token
-                return redirect(reverse('password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token}))
             else:
                 form.add_error('email', "Aucun compte associé à cette adresse e-mail.")
     else:
         form = CustomPasswordResetForm()
 
     return render(request, 'users/password_reset_form.html', {'form': form})
+
+def password_reset_done(request):
+    return render(request, 'users/password_reset_done.html')
 def custom_password_reset_confirm(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()

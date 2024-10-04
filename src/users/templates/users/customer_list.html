@@ -1,0 +1,21 @@
+<!-- users/templates/users/customer_list.html -->
+
+<h2>Liste des Clients</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.user.phone_number }}</td>  <!-- Accès au numéro de téléphone via l'utilisateur -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

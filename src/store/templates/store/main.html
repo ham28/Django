@@ -71,12 +71,14 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-success" type="submit">Search</button>
                         </form>
-                        <button class="btn btn-light ms-3">Login</button>
+                        <a class="btn btn-light ms-3" href="{% url 'login' %}">Login</a>
+<!--                        <a class="btn btn-light ms-3" href="http://127.0.0.1:8000/users/login/">Login</a>-->
                         <a href="{% url 'cart' %}">
-                          <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
+                            <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
                         </a>
                         <p id="cart-total">0</p>
                     </div>
+
                 </div>
             </div>
         </nav>

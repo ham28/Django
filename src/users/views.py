@@ -1,3 +1,6 @@
+from django.conf import settings
+import logging
+from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.utils.http import  urlsafe_base64_decode
@@ -63,16 +66,27 @@ def custom_password_reset_request(request):
                 }
 
                 email_message = render_to_string(email_template_name, context)
-                send_mail(subject, email_message, 'from@example.com', [user.email], fail_silently=False)
 
-                return redirect('password_reset_confirm')  # Rediriger vers la page de confirmation
+                try:
+                    send_mail(
+                        subject,
+                        email_message,
+                        settings.EMAIL_HOST_USER,  # Utiliser l'adresse e-mail configurée
+                        [user.email],
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    form.add_error(None, "Une erreur s'est produite lors de l'envoi de l'e-mail. Veuillez réessayer.")
+                    logging.error(f"Erreur d'envoi d'email: {e}")
+
+                # Rediriger vers l'URL de confirmation avec uidb64 et token
+                return redirect(reverse('password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token}))
             else:
                 form.add_error('email', "Aucun compte associé à cette adresse e-mail.")
     else:
         form = CustomPasswordResetForm()
 
     return render(request, 'users/password_reset_form.html', {'form': form})
-
 def custom_password_reset_confirm(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()

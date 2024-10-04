@@ -34,6 +34,7 @@ Django/
 │   │   │   │   ├── password_reset_complete.html
 │   │   │   │   ├── password_reset_confirm.html
 │   │   │   │   ├── password_reset_done.html
+│   │   │   │   ├── password_reset_email.html
 │   │   │   │   ├── password_reset_form.html
 │   │   │   │   ├── profile.html
 │   │   ├── __init__.py

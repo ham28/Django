@@ -114,6 +114,17 @@ def custom_password_reset_confirm(request, uidb64, token):
 
 def custom_password_reset_complete(request):
     return render(request, 'users/password_reset_complete.html')
+@login_required
+def user_profile(request):
+    user = request.user  # Récupérer l'utilisateur connecté
+    # Si vous avez un modèle Customer, vous pouvez également récupérer des informations supplémentaires
+    try:
+        customer = Customer.objects.get(user=user)
+    except Customer.DoesNotExist:
+        customer = None  # Gérer le cas où l'utilisateur n'est pas un client
+
+    return render(request, 'users/profile.html', {'user': user, 'customer': customer})
+
 
 @login_required
 def customer_list(request):

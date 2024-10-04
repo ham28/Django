@@ -32,7 +32,11 @@
                         </li>
                     </ul>
                     <div class="d-flex">
-                        <a class="btn btn-light ms-3" href="{% url 'login' %}">Login</a>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-light ms-3" href="{% url 'logout' %}">Déconnexion</a>
+                        {% else %}
+                            <a class="btn btn-light ms-3" href="{% url 'login' %}">Login</a>
+                        {% endif %}
                         <a href="{% url 'cart' %}">
                             <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
                         </a>
@@ -45,6 +49,14 @@
 
     <div class="container mt-5">
         <h2 class="text-center">Mettre à jour votre profil</h2>
+
+        {% if messages %}
+            <div class="alert alert-info" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <form method="post" class="bg-light p-4 rounded shadow-sm">
             {% csrf_token %}

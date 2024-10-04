@@ -143,7 +143,7 @@ EMAIL_USE_LOCALTIME = True
 # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # EMAIL_USE_LOCALTIME = True
 #
-# # Activer le débogage
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
+# Activer le débogage
+import logging
+logging.basicConfig(level=logging.DEBUG)
 

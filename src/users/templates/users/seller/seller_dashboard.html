@@ -1,0 +1,35 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h3>Tableau de bord du Vendeur</h3>
+    <div class="row">
+        <h4>Vos produits :</h4>
+        {% if products %}
+            {% for product in products %}
+            <div class="col-lg-4">
+                <img class="thumbnail" src="{{ product.imageUrl }}" alt="">
+                <div class="box-element product">
+                    <h6><strong>{{ product.name }}</strong></h6>
+                    <hr>
+                    <a class="btn btn-outline-success" href="">Voir</a>
+                    <h4 style="display:inline-block; float: right">{{ product.price|floatformat:2 }}</h4>
+                    <a href="{% url 'authorize_product' product.id %}" class="btn btn-outline-warning">Autoriser</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun produit enregistré.</p>
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        <h4>Ajouter un nouveau produit :</h4>
+        <form method="post" enctype="multipart/form-data" action="{% url 'add_product' %}">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Affiche tous les champs du formulaire d'ajout de produit -->
+            <button type="submit" class="btn btn-primary mt-2">Ajouter le produit</button>
+        </form>
+    </div>
+{% endblock content %}

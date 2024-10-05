@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from users.models import CustomUser
 
 
 # Modèle Client
@@ -8,20 +7,25 @@ class Customer(models.Model):
     user = models.OneToOneField('users.CustomUser', on_delete=models.CASCADE, related_name='customer_user')  # Link to CustomUser
     name = models.CharField(max_length=255)
     email = models.EmailField()
+    address = models.CharField(max_length=255, null=True, blank=True)  # Ajout du champ d'adresse
+    phone_number = models.CharField(max_length=15, null=True, blank=True)  # Ajout du champ de numéro de téléphone
 
     def __str__(self):
         return self.name
+
 # Modèle Produit
 class Product(models.Model):
+    is_authorized = models.BooleanField(default=False)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     price = models.FloatField()
     digital = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
     # Champs supplémentaires
-    description = models.TextField(null=True, blank=True)  # Description du produit
-    stock = models.PositiveIntegerField(default=0)  # Gestion des stocks
-    category = models.CharField(max_length=100, null=True, blank=True)  # Catégorie du produit
+    description = models.TextField(null=True, blank=True)
+    stock = models.PositiveIntegerField(default=0)
+    category = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.name

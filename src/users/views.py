@@ -16,6 +16,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from .forms import CustomPasswordResetForm
+from twilio.rest import Client
+from django.conf import settings
 
 User = get_user_model()
 
@@ -27,10 +29,29 @@ def register(request):
             if user.user_type == 'customer':
                 Customer.objects.create(user=user, name=user.username, email=form.cleaned_data['email'])
             login(request, user)
+
+            # Envoi du SMS de confirmation
+            phone_number = form.cleaned_data['phone_number']
+            sms_message = f"Bonjour {user.username}, votre compte a été créé avec succès sur notre plateforme e-commerce !"
+            send_sms(phone_number, sms_message)
+
             return redirect('store')  # Rediriger vers la page d'accueil
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+def send_sms(to, message):
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    try:
+        message = client.messages.create(
+            body=message,
+            from_=settings.TWILIO_PHONE_NUMBER,
+            to=to
+        )
+        return message.sid  # Retourne l'ID du message si réussi
+    except Exception as e:
+        print(f"Erreur lors de l'envoi du SMS : {e}")
+        return None
+
 
 def user_login(request):
     if request.method == 'POST':

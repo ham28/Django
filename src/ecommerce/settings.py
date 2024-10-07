@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os.path
 from pathlib import Path
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -26,7 +28,6 @@ SECRET_KEY = 'django-insecure-no4h*09q371o)03g65v%5^9n)@%)$#wh4u@u&alcm^7vlc^if*
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -150,3 +151,10 @@ EMAIL_USE_LOCALTIME = True
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
+
+env = environ.Env()
+environ.Env.read_env()
+
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER')

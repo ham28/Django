@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="fr">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
@@ -60,32 +60,37 @@
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
-                        {{ form.username }}
+                        <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" value="{{ form.username.value|default:'' }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-                        {{ form.email }}
+                        <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" class="form-control" value="{{ form.email.value|default:'' }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
-                        {{ form.phone_number }}
+                        <input type="text" name="{{ form.phone_number.name }}" id="{{ form.phone_number.id_for_label }}" class="form-control" value="{{ form.phone_number.value|default:'' }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.user_type.id_for_label }}" class="form-label">{{ form.user_type.label }}</label>
-                        {{ form.user_type }}
+                        <select name="{{ form.user_type.name }}" id="{{ form.user_type.id_for_label }}" class="form-control" required>
+                            {% for choice in form.user_type.field.choices %}
+                                <option value="{{ choice.0 }}" {% if choice.0 == form.user_type.value %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
-                        {{ form.password1 }}
+                        <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control" required>
                         <input type="checkbox" id="show-password1" onclick="togglePassword('password1')">
                         <label for="show-password1">Afficher le mot de passe</label>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
-                        {{ form.password2 }}
+                        <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="form-control" required>
                         <input type="checkbox" id="show-password2" onclick="togglePassword('password2')">
                         <label for="show-password2">Afficher le mot de passe</label>
                     </div>
+
                     <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
                 </form>
                 <p class="text-center mt-3">Vous avez déjà un compte ? <a href="{% url 'login' %}">Connectez-vous ici</a>.</p>
@@ -96,8 +101,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
     <script>
-        function togglePassword(field) {
-            var passwordField = document.getElementById(field);
+        function togglePassword(fieldId) {
+            var passwordField = document.getElementById(fieldId);
             if (passwordField.type === "password") {
                 passwordField.type = "text";
             } else {
